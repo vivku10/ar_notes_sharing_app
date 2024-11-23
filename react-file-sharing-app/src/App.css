@@ -1,140 +1,105 @@
-/* General Styles */
-.App {
-  font-family: 'Roboto', sans-serif;
-  background-color: #f4f4f9;
-  color: #333;
-  padding: 0;
-  margin: 0;
+/* src/App.css */
+
+.app-container {
+  font-family: Arial, sans-serif;
+  background-color: #f4f7fa;
+  padding: 20px;
+}
+
+.app-header {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  height: 100vh;
-  background-image: url('https://via.placeholder.com/1500'); /* Replace with your background image */
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-header {
-  width: 100%;
-  background-color: rgba(255, 255, 255, 0.9);
+.header-left {
+  font-size: 24px;
+  font-weight: bold;
   color: #333;
-  padding: 20px 0;
-  text-align: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.header-content {
-  max-width: 1200px;
-  margin: 0 auto;
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+button.wallet-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  margin-left: 10px; /* Added margin to separate it from other items */
+}
+
+button.wallet-button:hover {
+  background-color: #0056b3;
+}
+
+input[type="file"] {
+  margin-top: 10px;
+}
+
+p {
+  margin-top: 20px;
+  font-size: 16px;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 20px;
 }
 
 h1 {
-  font-size: 2.5rem;
-  color: #ff9800;
-  margin: 0;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
 }
 
-.header-buttons {
-  margin-top: 15px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.header-buttons button {
-  background-color: #ff9800;
-  color: white;
-  padding: 10px 25px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  margin: 0 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
-}
-
-.header-buttons button:hover {
-  background-color: #e68900;
-  transform: scale(1.05);
-}
-
-/* Load Wallet Key Button */
-.load-wallet-btn {
-  background-color: #008080;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  font-size: 16px;
-  margin: 0 5px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 128, 128, 0.3);
-}
-
-.load-wallet-btn:hover {
-  background-color: #006666;
-  transform: scale(1.05);
-}
-
-.load-wallet-btn i {
-  margin-right: 8px;
-}
-
-.main-content {
+.app-content {
   display: flex;
   justify-content: center;
-  width: 100%;
-  padding: 20px 0;
+  align-items: center;
+  flex-direction: column;
 }
 
-.content-section {
+.app-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  max-width: 1200px;
 }
 
-.wallet-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+.app-navigation {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.navigation-buttons {
   display: flex;
   justify-content: center;
-  align-items: center;
+  margin-bottom: 20px;
 }
 
-.wallet-modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
+.navigation-buttons button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
 }
 
-footer {
-  background-color: #111;
-  color: #fff;
-  padding: 20px;
-  text-align: center;
-  width: 100%;
-  margin-top: auto;
+.navigation-buttons button:hover {
+  background-color: #0056b3;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-  .header-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .header-buttons button {
-    margin-bottom: 10px;
-    width: 100%;
-  }
+.modal {
+  margin-top: 10px;
 }
