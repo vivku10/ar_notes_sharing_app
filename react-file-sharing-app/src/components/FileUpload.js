@@ -1,4 +1,3 @@
-// src/components/FileUpload.js
 import React, { useState } from "react";
 import Arweave from "arweave";
 
@@ -8,7 +7,7 @@ const arweave = Arweave.init({
   protocol: "https",
 });
 
-const FileUpload = ({ walletKeyStatus }) => {
+function FileUpload({ addFile, walletKeyStatus }) {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("");
 
@@ -19,20 +18,19 @@ const FileUpload = ({ walletKeyStatus }) => {
   const handleUpload = async (event) => {
     event.preventDefault();
 
-    // Check if a file is selected
     if (!file) {
       setStatus("Please select a file to upload.");
       return;
     }
 
-    // Load wallet key from localStorage
-    const walletKey = JSON.parse(localStorage.getItem("walletKey"));
-    if (!walletKey) {
-      setStatus("Please load your wallet key first.");
-      return;
-    }
-
     try {
+      // Load wallet key from localStorage
+      const walletKey = JSON.parse(localStorage.getItem("walletKey"));
+      if (!walletKey) {
+        setStatus("Wallet key not found. Please log in.");
+        return;
+      }
+
       // Read file as ArrayBuffer
       const fileData = await readFileAsArrayBuffer(file);
 
@@ -54,6 +52,13 @@ const FileUpload = ({ walletKeyStatus }) => {
 
       if (response.status === 200) {
         setStatus("File uploaded successfully! Transaction ID: " + transaction.id);
+
+        // Update files list in parent component
+        addFile({
+          transactionId: transaction.id,
+          fileName: file.name,
+          fileType: file.type,
+        });
       } else {
         setStatus("Failed to upload file. Status code: " + response.status);
       }
@@ -83,6 +88,6 @@ const FileUpload = ({ walletKeyStatus }) => {
       {status && <p>{status}</p>}
     </div>
   );
-};
+}
 
 export default FileUpload;

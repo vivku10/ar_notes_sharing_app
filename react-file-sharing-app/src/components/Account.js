@@ -6,11 +6,17 @@ function Account() {
 
   useEffect(() => {
     const fetchWalletAddress = async () => {
-      const address = await getWalletAddress();
-      setWalletAddress(address);
+      try {
+        const address = await getWalletAddress();
+        setWalletAddress(address);
+      } catch (error) {
+        console.error("Error fetching wallet address:", error);
+        setWalletAddress("Error loading address");
+      }
     };
+
     fetchWalletAddress();
-  }, []);
+  }, []); // Empty array to call this only once when component mounts
 
   return (
     <div>
