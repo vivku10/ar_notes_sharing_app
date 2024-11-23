@@ -36,7 +36,7 @@ function FileDelete({ files, deleteFile }) {
 
   return (
     <div>
-      <h2>Delete File (Mark as deleted)</h2>
+      <h2>Soft Delete (Work In Progress...)</h2>
       <form onSubmit={handleDelete}>
         <input
           type="text"

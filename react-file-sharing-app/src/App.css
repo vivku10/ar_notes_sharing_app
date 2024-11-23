@@ -3,9 +3,11 @@
   margin: 0;
   padding: 0;
   background-color: #f4f4f9;
+  background-attachment: fixed;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
 }
 
 .app-header {
@@ -61,6 +63,66 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* New styles for File List */
+.file-list-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.file-list-container h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.file-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.file-item {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.file-item:hover {
+  transform: translateY(-5px);
+}
+
+.file-icon {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.file-info {
+  font-size: 10px;
+}
+
+.file-link {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+.file-link:hover {
+  text-decoration: underline;
+}
+
+.file-item p {
+  margin: 5px 0;
+  color: #666;
+}
+
 input[type="text"] {
   padding: 10px;
   margin-right: 10px;
@@ -84,4 +146,30 @@ button[type="submit"]:hover {
 
 h2 {
   color: #333;
+}
+
+.footer-container {
+  background-color: #4CAF50;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-size: 1em;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 10;  /* Ensure footer stays above other content */
+}
+
+.footer-container p {
+  margin: 5px 0;
+}
+
+.footer-container p a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.footer-container p a:hover {
+  text-decoration: underline;
 }

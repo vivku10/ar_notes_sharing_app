@@ -1,0 +1,22 @@
+.footer-container {
+    background-color: #4CAF50; /* Match header background color */
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1em;
+    width: 100%;
+  }
+  
+  .footer-container p {
+    margin: 5px 0;
+  }
+  
+  .footer-container p a {
+    color: #ffffff;
+    text-decoration: none;
+  }
+  
+  .footer-container p a:hover {
+    text-decoration: underline;
+  }
+  
