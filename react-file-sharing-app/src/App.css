@@ -1,38 +1,140 @@
+/* General Styles */
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f4f4f9;
+  color: #333;
+  padding: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  height: 100vh;
+  background-image: url('https://via.placeholder.com/1500'); /* Replace with your background image */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+header {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #333;
+  padding: 20px 0;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2.5rem;
+  color: #ff9800;
+  margin: 0;
+  font-weight: 700;
+}
+
+.header-buttons {
+  margin-top: 15px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.header-buttons button {
+  background-color: #ff9800;
   color: white;
+  padding: 10px 25px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
 }
 
-.App-link {
-  color: #61dafb;
+.header-buttons button:hover {
+  background-color: #e68900;
+  transform: scale(1.05);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Load Wallet Key Button */
+.load-wallet-btn {
+  background-color: #008080;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 128, 128, 0.3);
+}
+
+.load-wallet-btn:hover {
+  background-color: #006666;
+  transform: scale(1.05);
+}
+
+.load-wallet-btn i {
+  margin-right: 8px;
+}
+
+.main-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.content-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.wallet-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wallet-modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+footer {
+  background-color: #111;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  margin-top: auto;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .header-buttons {
+    flex-direction: column;
+    align-items: center;
   }
-  to {
-    transform: rotate(360deg);
+
+  .header-buttons button {
+    margin-bottom: 10px;
+    width: 100%;
   }
 }
