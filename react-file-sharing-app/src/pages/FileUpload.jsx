@@ -7,9 +7,9 @@ const arweave = Arweave.init({
   protocol: "https",
 });
 
-function FileUpload({ addFile, walletKeyStatus }) {
+const FileUpload = ({ addFile }) => {
   const [file, setFile] = useState(null);
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState({ message: "", type: "" });
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -19,56 +19,53 @@ function FileUpload({ addFile, walletKeyStatus }) {
     event.preventDefault();
 
     if (!file) {
-      setStatus("Please select a file to upload.");
+      setStatus({ message: "Please select a file to upload.", type: "danger" });
       return;
     }
 
     try {
-      // Load wallet key from localStorage
       const walletKey = JSON.parse(localStorage.getItem("walletKey"));
       if (!walletKey) {
-        setStatus("Wallet key not found. Please log in.");
+        setStatus({ message: "Wallet key not found. Please log in.", type: "danger" });
         return;
       }
 
-      // Read file as ArrayBuffer
       const fileData = await readFileAsArrayBuffer(file);
 
-      // Create transaction
       const transaction = await arweave.createTransaction(
         { data: new Uint8Array(fileData) },
         walletKey
       );
 
-      // Add tags
       transaction.addTag("Content-Type", file.type || "application/octet-stream");
       transaction.addTag("App-Name", "FileSharingApp");
 
-      // Sign transaction
       await arweave.transactions.sign(transaction, walletKey);
-
-      // Submit transaction
       const response = await arweave.transactions.post(transaction);
 
       if (response.status === 200) {
-        setStatus("File uploaded successfully! Transaction ID: " + transaction.id);
+        setStatus({
+          message: `File uploaded successfully! Transaction ID: ${transaction.id}`,
+          type: "success",
+        });
 
-        // Update files list in parent component
         addFile({
           transactionId: transaction.id,
           fileName: file.name,
           fileType: file.type,
         });
       } else {
-        setStatus("Failed to upload file. Status code: " + response.status);
+        setStatus({
+          message: `Failed to upload file. Status code: ${response.status}`,
+          type: "danger",
+        });
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      setStatus("Error uploading file: " + error.message);
+      setStatus({ message: `Error uploading file: ${error.message}`, type: "danger" });
     }
   };
 
-  // Utility function to read file as ArrayBuffer
   const readFileAsArrayBuffer = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -79,15 +76,31 @@ function FileUpload({ addFile, walletKeyStatus }) {
   };
 
   return (
-    <div>
+    <div className="container mt-4">
       <h2>Upload File</h2>
       <form onSubmit={handleUpload}>
-        <input type="file" onChange={handleFileChange} />
-        <button type="submit">Upload</button>
+        <div className="mb-3">
+          <label htmlFor="fileInput" className="form-label">
+            Select File
+          </label>
+          <input
+            type="file"
+            id="fileInput"
+            onChange={handleFileChange}
+            className="form-control"
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Upload
+        </button>
       </form>
-      {status && <p>{status}</p>}
+      {status.message && (
+        <div className={`alert alert-${status.type} mt-3`} role="alert">
+          {status.message}
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default FileUpload;

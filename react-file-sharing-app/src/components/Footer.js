@@ -1,13 +1,17 @@
 import React from "react";
-import "./Footer.css"; // Importing Footer specific styles
 
 const Footer = () => {
   return (
-    <div className="footer-container">
-      <p>&copy; 2024 ArNotes. All Rights Reserved.</p>
-      <p>Made with ❤️ by Your Team</p>
-    </div>
+    <footer className="bg-dark text-white text-center py-3">
+      <div className="container">
+        <p className="mb-1">&copy; {new Date().getFullYear()} ArNotes. All Rights Reserved.</p>
+        <p className="mb-0">
+          Made with <span style={{ color: "red" }}>❤️</span> by Our Team
+        </p>
+      </div>
+    </footer>
   );
 };
 
 export default Footer;
+
