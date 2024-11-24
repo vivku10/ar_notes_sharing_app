@@ -89,8 +89,8 @@ const Navigation = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/file-list" className="nav-link">
-                File List
+              <Link to="/notes-list" className="nav-link">
+                Notes List
               </Link>
             </li>
             <li className="nav-item">
