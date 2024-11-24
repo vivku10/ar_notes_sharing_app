@@ -1,6 +1,6 @@
 /* Full-screen background image */
 .main-layout {
-  background-image: url("../assets/images/background.webp"); /* Corrected to .webp */
+  background-image: url("../assets/images/background2.webp"); /* Corrected to .webp */
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
