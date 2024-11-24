@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import { AppProvider } from "./context/AppContext";
 import HomePage from "./pages/HomePage";
 import Account from "./pages/Account";
-import FileUpload from "./pages/FileUpload";
+import NotesUpload from "./pages/NotesUpload";
 import FileList from "./pages/FileList";
 import FilePreview from "./pages/FilePreview";
 import FileEncryptUpload from "./pages/FileEncryptUpload";
@@ -24,7 +24,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/account" element={<Account />} />
-            <Route path="/file-upload" element={<FileUpload />} />
+            <Route path="/notes-upload" element={<NotesUpload />} />
             <Route path="/file-list" element={<FileList />} />
             <Route path="/file-preview" element={<FilePreview />} />
             <Route path="/file-encrypt-upload" element={<FileEncryptUpload />} />

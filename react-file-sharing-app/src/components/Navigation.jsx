@@ -64,8 +64,8 @@ const Navigation = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
-              <Link to="/file-upload" className="nav-link">
-                File Upload
+              <Link to="/notes-upload" className="nav-link">
+                Notes Upload
               </Link>
             </li>
             <li className="nav-item">
