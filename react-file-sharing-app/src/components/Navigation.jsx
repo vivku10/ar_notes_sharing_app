@@ -34,9 +34,29 @@ const Navigation = () => {
     reader.readAsText(file);
   };
 
+  const handleArConnectLogin = async () => {
+    if (!window.arweaveWallet) {
+      alert("ArConnect extension not detected. Please install it to use this feature.");
+      return;
+    }
+
+    try {
+      await window.arweaveWallet.connect(["ACCESS_ADDRESS", "SIGN_TRANSACTION"]);
+      const address = await window.arweaveWallet.getActiveAddress();
+      setWalletAddress(address); // Set the wallet address globally
+      localStorage.setItem("walletAddress", address); // Persist wallet address
+      alert("Logged in successfully with ArConnect!");
+    } catch (err) {
+      console.error("ArConnect login failed:", err);
+      alert("Failed to login with ArConnect. Please try again.");
+    }
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("walletKey"); // Clear wallet key from localStorage
-    setWalletAddress(""); // Clear wallet address
+    localStorage.removeItem("walletAddress"); // Clear wallet address
+    setWalletAddress(""); // Clear wallet address in context
+    alert("Logged out successfully.");
   };
 
   return (
@@ -117,6 +137,11 @@ const Navigation = () => {
               <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="accountDropdown">
                 {!walletAddress && (
                   <>
+                    <li>
+                      <button className="dropdown-item" onClick={handleArConnectLogin}>
+                        Login with ArConnect
+                      </button>
+                    </li>
                     <li>
                       <button
                         className="dropdown-item"

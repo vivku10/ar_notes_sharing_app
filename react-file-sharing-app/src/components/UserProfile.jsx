@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import Account from "arweave-account";
 
-const UserProfile = ({ walletAddress }) => {
+const UserProfile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -10,8 +10,16 @@ const UserProfile = ({ walletAddress }) => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        const walletAddress = localStorage.getItem("walletAddress");
+        if (!walletAddress) throw new Error("Wallet address not found.");
+
         const account = new Account();
         const userProfile = await account.get(walletAddress);
+
+        if (!userProfile) {
+          throw new Error("Profile not found. Please log in again.");
+        }
+
         setProfile(userProfile);
       } catch (err) {
         console.error("Error fetching user profile:", err);
@@ -21,13 +29,8 @@ const UserProfile = ({ walletAddress }) => {
       }
     };
 
-    if (walletAddress) {
-      fetchProfile();
-    } else {
-      setError("Wallet address not provided.");
-      setLoading(false);
-    }
-  }, [walletAddress]);
+    fetchProfile();
+  }, []);
 
   if (loading) {
     return (
@@ -51,14 +54,15 @@ const UserProfile = ({ walletAddress }) => {
       <div className="card shadow-sm">
         <div className="card-body text-center">
           <img
-            src={profile.profile.avatarURL}
+            src={profile.profilePicture || "default-avatar.png"}
             alt="Avatar"
             className="img-thumbnail mb-3"
             style={{ width: "150px", height: "150px", objectFit: "cover" }}
           />
-          <h2>{profile.profile.name}</h2>
-          <p className="text-muted">{profile.profile.bio}</p>
-          {/* Add additional profile fields if necessary */}
+          <h2>{profile.name}</h2>
+          <p className="text-muted">{profile.bio}</p>
+          <p><strong>School:</strong> {profile.school}</p>
+          <p><strong>Courses:</strong> {profile.courses.join(", ")}</p>
         </div>
       </div>
     </div>
