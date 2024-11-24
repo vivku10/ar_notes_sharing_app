@@ -1,14 +1,13 @@
 /* Full-screen background image */
 .main-layout {
-    background-image: url("../assets/images/background.webp"); /* Adjust the path */
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  background-image: url("../assets/images/background.webp"); /* Corrected to .webp */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
   
   /* Content wrapper with padding */
   .content-wrapper {

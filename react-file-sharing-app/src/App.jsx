@@ -19,7 +19,7 @@ const App = () => {
   return (
     <AppProvider>
       <Router>
-        {/* <MainLayout> */}
+        <MainLayout>
           <Navigation />
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -33,7 +33,7 @@ const App = () => {
             <Route path="/file-delete" element={<FileDelete />} />
           </Routes>
           <Footer />
-        {/* </MainLayout> */}
+        </MainLayout>
       </Router>
     </AppProvider>
   );
