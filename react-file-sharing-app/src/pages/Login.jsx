@@ -1,18 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import logo from "../assets/images/ArNotesLogo.webp"; // Replace with your logo path
+import logo from "../assets/images/ArNotesLogo.webp";
+import Account from "arweave-account";
 
 const Login = () => {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleFileLogin = async (event) => {
     event.preventDefault();
-    setError(""); // Clear any previous errors
+    setError("");
+    setLoading(true);
 
     const walletFile = event.target.walletFile.files[0];
     if (!walletFile) {
       setError("Please select a wallet key file.");
+      setLoading(false);
       return;
     }
 
@@ -20,46 +24,65 @@ const Login = () => {
       const reader = new FileReader();
       reader.onload = async (e) => {
         const walletContent = e.target.result;
-
-        // Save wallet key to localStorage (Simulating login)
         localStorage.setItem("walletKey", walletContent);
-
-        // Navigate to the account page after successful login
+        setLoading(false);
         navigate("/account");
       };
       reader.readAsText(walletFile);
     } catch (err) {
-      console.error("Login failed:", err);
+      console.error("File login failed:", err);
       setError("Failed to login. Please check your wallet key file.");
+      setLoading(false);
     }
   };
 
   const handleArConnectLogin = async () => {
-    setError(""); // Clear any previous errors
+    setError("");
+    setLoading(true);
+
     if (!window.arweaveWallet) {
       setError("ArConnect extension not detected. Please install it to use this feature.");
+      setLoading(false);
       return;
     }
 
     try {
-      // Request permissions from ArConnect
       await window.arweaveWallet.connect(["ACCESS_ADDRESS", "SIGN_TRANSACTION"]);
-
-      // Fetch wallet address (this step simulates a successful login)
       const walletAddress = await window.arweaveWallet.getActiveAddress();
-      console.log("Logged in with ArConnect, Wallet Address:", walletAddress);
 
-      // Navigate to account page
+      // Fetch or create profile using ArProfile
+      const account = new Account();
+      let profile = await account.get(walletAddress);
+
+      // If no profile exists, create a default one
+      if (!profile) {
+        profile = {
+          name: "New User",
+          bio: "Welcome to ArNotes!",
+          school: "Unknown",
+          courses: [],
+          preferences: {},
+          profilePicture: "",
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        await account.update(walletAddress, profile);
+      }
+
+      // Store wallet address and navigate to account page
+      localStorage.setItem("walletAddress", walletAddress);
       navigate("/account");
     } catch (err) {
       console.error("ArConnect login failed:", err);
       setError("Failed to login with ArConnect. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="container mt-5">
-      {/* Logo Section */}
       <div className="text-center mb-4">
         <img src={logo} alt="ArNotes Logo" style={{ width: "150px" }} />
         <h1 className="mt-3">Welcome to ArNotes</h1>
@@ -84,8 +107,8 @@ const Login = () => {
                   className="form-control"
                 />
               </div>
-              <button type="submit" className="btn btn-primary btn-block">
-                Login with Wallet File
+              <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+                {loading ? "Logging in..." : "Login with Wallet File"}
               </button>
             </form>
 
@@ -94,8 +117,8 @@ const Login = () => {
             {/* ArConnect Login */}
             <div className="text-center">
               <p>Or login with</p>
-              <button onClick={handleArConnectLogin} className="btn btn-success">
-                Login with ArConnect
+              <button onClick={handleArConnectLogin} className="btn btn-success" disabled={loading}>
+                {loading ? "Connecting to ArConnect..." : "Login with ArConnect"}
               </button>
             </div>
 
