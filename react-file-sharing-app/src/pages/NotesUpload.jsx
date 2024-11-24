@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Arweave from "arweave";
 
+// Initialize Arweave instance
 const arweave = Arweave.init({
   host: "arweave.net",
   port: 443,
@@ -15,6 +16,23 @@ const NotesUpload = ({ addNote }) => {
   const [file, setFile] = useState(null);
   const [timeLock, setTimeLock] = useState("");
   const [status, setStatus] = useState({ message: "", type: "" });
+  const [walletKey, setWalletKey] = useState(null);
+
+  useEffect(() => {
+    // Load wallet key from localStorage on component mount
+    const savedWalletKey = localStorage.getItem("walletKey");
+    if (savedWalletKey) {
+      setWalletKey(JSON.parse(savedWalletKey));
+    } else if (window.arweaveWallet) {
+      window.arweaveWallet
+        .connect(["ACCESS_ADDRESS", "SIGN_TRANSACTION"])
+        .then(() => window.arweaveWallet.getActiveAddress())
+        .then((address) => setWalletKey(address))
+        .catch(() =>
+          setStatus({ message: "Failed to connect to ArConnect.", type: "danger" })
+        );
+    }
+  }, []);
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -28,13 +46,12 @@ const NotesUpload = ({ addNote }) => {
       return;
     }
 
-    try {
-      const walletKey = JSON.parse(localStorage.getItem("walletKey"));
-      if (!walletKey) {
-        setStatus({ message: "Wallet key not found. Please log in.", type: "danger" });
-        return;
-      }
+    if (!walletKey) {
+      setStatus({ message: "Wallet key not found. Please log in.", type: "danger" });
+      return;
+    }
 
+    try {
       // Prepare note data
       const noteData = {
         title: noteTitle,
@@ -45,20 +62,22 @@ const NotesUpload = ({ addNote }) => {
         createdAt: new Date().toISOString(),
       };
 
-      // If a file is attached, read its data
+      // Attach file if provided
       let fileAttachment = null;
       if (file) {
         const fileData = await readFileAsArrayBuffer(file);
         fileAttachment = {
           fileName: file.name,
           fileType: file.type,
-          fileData: new Uint8Array(fileData),
+          fileData: Array.from(new Uint8Array(fileData)), // Convert to array for JSON serialization
         };
       }
 
-      // Create and upload Arweave transaction
+      // Create Arweave transaction
       const transaction = await arweave.createTransaction(
-        { data: JSON.stringify({ ...noteData, attachment: fileAttachment }) },
+        {
+          data: JSON.stringify({ ...noteData, attachment: fileAttachment }),
+        },
         walletKey
       );
 
@@ -70,6 +89,7 @@ const NotesUpload = ({ addNote }) => {
       transaction.addTag("Tags", tags);
       transaction.addTag("Time-Lock", timeLock || "none");
 
+      // Sign and submit transaction
       await arweave.transactions.sign(transaction, walletKey);
       const response = await arweave.transactions.post(transaction);
 
@@ -79,15 +99,17 @@ const NotesUpload = ({ addNote }) => {
           type: "success",
         });
 
-        // Notify parent component
-        addNote({
-          transactionId: transaction.id,
-          noteTitle,
-          noteContent,
-          category,
-          tags: tags.split(","),
-          fileAttachment,
-        });
+        if (addNote) {
+          // Notify parent component if addNote is provided
+          addNote({
+            transactionId: transaction.id,
+            noteTitle,
+            noteContent,
+            category,
+            tags: tags.split(","),
+            fileAttachment,
+          });
+        }
 
         // Reset form fields
         setNoteTitle("");

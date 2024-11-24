@@ -19,7 +19,7 @@ const FileList = () => {
   useEffect(() => {
     const fetchFiles = async () => {
       try {
-        const files = await fetchFilesByTag("App-Name", "FileSharingApp");
+        const files = await fetchFilesByTag("App-Name", "NotesSharingApp");
         setFiles(files);
       } catch (error) {
         console.error("Error fetching files:", error);
