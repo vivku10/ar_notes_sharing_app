@@ -62,7 +62,7 @@ const NotesUpload = ({ addNote }) => {
 
         // Add metadata tags for the file
         transaction.addTag("App-Name", "NotesSharingApp");
-        transaction.addTag("Content-Type", file.type);
+        transaction.addTag("Content-Type", file.type || "application/octet-stream");
         transaction.addTag("File-Name", file.name);
       } else {
         // If no file is attached, upload only the note details
@@ -79,7 +79,7 @@ const NotesUpload = ({ addNote }) => {
 
         // Add metadata tags for the note
         transaction.addTag("App-Name", "NotesSharingApp");
-        transaction.addTag("Content-Type", "application/json");
+        transaction.addTag("Content-Type", file.type || "application/octet-stream");
       }
 
       // Add common tags
