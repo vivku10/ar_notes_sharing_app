@@ -89,7 +89,7 @@ const Navigation = () => {
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/file-list" className="nav-link">
+              <Link to="/notes-list" className="nav-link">
                 List
               </Link>
             </li>
