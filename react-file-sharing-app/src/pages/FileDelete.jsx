@@ -36,27 +36,49 @@ const FileDelete = ({ files, deleteFile }) => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Soft Delete</h2>
-      <form onSubmit={handleDelete} className="form-inline">
-        <div className="form-group mb-3">
-          <input
-            type="text"
-            value={transactionId}
-            onChange={handleInputChange}
-            placeholder="Enter Transaction ID"
-            className="form-control mr-2"
-          />
-          <button type="submit" className="btn btn-danger">
-            Delete
-          </button>
+    <div
+      style={{
+        backgroundImage: "url('/path-to-your-background.jpg')", // Add your background image path here
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh", // Ensures full height coverage
+        paddingBottom: "100px", // Ensures enough space for footer
+      }}
+    >
+      <div className="container mt-5" style={{ marginTop: "100px" }}>
+        {/* Adjusted margin to add space from navigation */}
+        <div
+          className="shadow-lg rounded p-4 mx-auto"
+          style={{
+            backgroundColor: "#ffffff", // Solid white background for the container
+            color: "#000", // Dark text for contrast
+            border: "1px solid #ddd", // Optional border for a defined look
+            maxWidth: "800px", // Max width for the content
+            width: "100%", // Ensure the container takes full width up to maxWidth
+          }}
+        >
+          <h2 className="text-center">Soft Delete File</h2>
+          <form onSubmit={handleDelete} className="mb-3">
+            <div className="mb-3">
+              <input
+                type="text"
+                value={transactionId}
+                onChange={handleInputChange}
+                placeholder="Enter Transaction ID"
+                className="form-control"
+              />
+            </div>
+            <button type="submit" className="btn btn-danger w-100">
+              Delete
+            </button>
+          </form>
+          {status.message && (
+            <div className={`alert alert-${status.type} mt-3`} role="alert">
+              {status.message}
+            </div>
+          )}
         </div>
-      </form>
-      {status.message && (
-        <div className={`alert alert-${status.type} mt-3`} role="alert">
-          {status.message}
-        </div>
-      )}
+      </div>
     </div>
   );
 };

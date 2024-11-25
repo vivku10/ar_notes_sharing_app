@@ -13,6 +13,8 @@ import FileEncryptUpload from "./pages/FileEncryptUpload";
 import FileShare from "./pages/FileShare";
 import FileSearch from "./pages/FileSearch";
 import FileDelete from "./pages/FileDelete";
+import GetStarted from "./pages/GetStarted";
+import SignUp from "./pages/Login";
 import "./styles/App.css";
 
 const App = () => {
@@ -31,6 +33,8 @@ const App = () => {
             <Route path="/file-share" element={<FileShare />} />
             <Route path="/file-search" element={<FileSearch />} />
             <Route path="/file-delete" element={<FileDelete />} />
+            <Route path="/get-started" element={<GetStarted />} />
+            <Route path="/sign-up" element={<SignUp />} />
           </Routes>
           <Footer />
         </MainLayout>

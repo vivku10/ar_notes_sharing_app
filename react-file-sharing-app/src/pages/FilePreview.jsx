@@ -99,57 +99,79 @@ const FilePreview = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Preview Note or File</h2>
-      <div className="mb-3">
-        <label htmlFor="transactionIdInput" className="form-label">
-          Enter Transaction ID
-        </label>
-        <input
-          type="text"
-          id="transactionIdInput"
-          placeholder="Enter Transaction ID"
-          value={transactionId}
-          onChange={(e) => setTransactionId(e.target.value)}
-          className="form-control"
-        />
+    <div
+      style={{
+        backgroundImage: "url('/path-to-your-background.jpg')", // Add your background image path here
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        minHeight: "100vh", // Ensures full height coverage
+        paddingBottom: "100px", // Ensures enough space for footer
+      }}
+    >
+      <div className="container mt-5" style={{ marginTop: "100px" }}>
+        {/* Adjusted margin to add space from navigation */}
+        <div
+          className="shadow-lg rounded p-4 mx-auto"
+          style={{
+            backgroundColor: "#ffffff", // Solid white background for the container
+            color: "#000", // Dark text for contrast
+            border: "1px solid #ddd", // Optional border for a defined look
+            maxWidth: "800px", // Max width for the content to resemble the file upload box
+            width: "100%", // Ensure the container takes full width up to maxWidth
+          }}
+        >
+          <h2 className="text-center">Preview Note or File</h2>
+          <div className="mb-3">
+            <label htmlFor="transactionIdInput" className="form-label">
+              Enter Transaction ID
+            </label>
+            <input
+              type="text"
+              id="transactionIdInput"
+              placeholder="Enter Transaction ID"
+              value={transactionId}
+              onChange={(e) => setTransactionId(e.target.value)}
+              className="form-control"
+            />
+          </div>
+          <button onClick={handlePreview} className="btn btn-primary mb-3 w-100">
+            Preview
+          </button>
+          {loading && (
+            <div className="text-center my-3">
+              <Spinner animation="border" variant="primary" />
+              <p>Loading content...</p>
+            </div>
+          )}
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+          {noteData && (
+            <div className="note-preview mt-3">
+              <h3>{noteData.title}</h3>
+              <p><strong>Tags:</strong> {noteData.tags.join(", ")}</p>
+              <p><strong>Category:</strong> {noteData.category}</p>
+              <p><strong>Content:</strong></p>
+              <pre
+                style={{
+                  whiteSpace: "pre-wrap",
+                  wordBreak: "break-word",
+                  maxHeight: "400px",
+                  overflowY: "auto",
+                }}
+              >
+                {noteData.content}
+              </pre>
+            </div>
+          )}
+          {fileContent && <div className="file-preview mt-3">{fileContent}</div>}
+          {!noteData && !fileContent && !loading && !error && (
+            <p className="text-muted">Enter a Transaction ID to preview content.</p>
+          )}
+        </div>
       </div>
-      <button onClick={handlePreview} className="btn btn-primary mb-3">
-        Preview
-      </button>
-      {loading && (
-        <div className="text-center my-3">
-          <Spinner animation="border" variant="primary" />
-          <p>Loading content...</p>
-        </div>
-      )}
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
-      )}
-      {noteData && (
-        <div className="note-preview mt-3">
-          <h3>{noteData.title}</h3>
-          <p><strong>Tags:</strong> {noteData.tags.join(", ")}</p>
-          <p><strong>Category:</strong> {noteData.category}</p>
-          <p><strong>Content:</strong></p>
-          <pre
-            style={{
-              whiteSpace: "pre-wrap",
-              wordBreak: "break-word",
-              maxHeight: "400px",
-              overflowY: "auto",
-            }}
-          >
-            {noteData.content}
-          </pre>
-        </div>
-      )}
-      {fileContent && <div className="file-preview mt-3">{fileContent}</div>}
-      {!noteData && !fileContent && !loading && !error && (
-        <p className="text-muted">Enter a Transaction ID to preview content.</p>
-      )}
     </div>
   );
 };

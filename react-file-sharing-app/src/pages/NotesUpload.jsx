@@ -118,91 +118,112 @@ const NotesUpload = ({ addNote }) => {
   };
 
   return (
-    <div className="container mt-4">
-      <h2>Create and Upload Note</h2>
-      <form onSubmit={handleUpload}>
-        <div className="mb-3">
-          <label htmlFor="noteTitle" className="form-label">
-            Note Title
-          </label>
-          <input
-            type="text"
-            id="noteTitle"
-            value={noteTitle}
-            onChange={(e) => setNoteTitle(e.target.value)}
-            className="form-control"
-            required
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="noteContent" className="form-label">
-            Note Content
-          </label>
-          <textarea
-            id="noteContent"
-            value={noteContent}
-            onChange={(e) => setNoteContent(e.target.value)}
-            rows="5"
-            className="form-control"
-            required
-          ></textarea>
-        </div>
-        <div className="mb-3">
-          <label htmlFor="tags" className="form-label">
-            Tags (comma-separated)
-          </label>
-          <input
-            type="text"
-            id="tags"
-            value={tags}
-            onChange={(e) => setTags(e.target.value)}
-            className="form-control"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="category" className="form-label">
-            Category
-          </label>
-          <input
-            type="text"
-            id="category"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="form-control"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="fileInput" className="form-label">
-            Attach File (Optional)
-          </label>
-          <input
-            type="file"
-            id="fileInput"
-            onChange={handleFileChange}
-            className="form-control"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="timeLock" className="form-label">
-            Time Lock (Optional, format: YYYY-MM-DDTHH:mm:ssZ)
-          </label>
-          <input
-            type="datetime-local"
-            id="timeLock"
-            value={timeLock}
-            onChange={(e) => setTimeLock(e.target.value)}
-            className="form-control"
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">
-          Upload Note
-        </button>
-      </form>
-      {status.message && (
-        <div className={`alert alert-${status.type} mt-3`} role="alert">
-          {status.message}
-        </div>
-      )}
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        paddingBottom: "100px", // Add space at the bottom to avoid footer blocking
+      }}
+    >
+      <div
+        className="shadow-lg rounded p-4"
+        style={{
+          maxWidth: "800px", // Match the preview component width
+          width: "100%",
+          backgroundColor: "#ffffff", // Solid white background for the container
+          color: "#000", // Dark text for contrast
+          border: "1px solid #ddd", // Optional border for a defined look
+        }}
+      >
+        <h2 className="text-center">Create and Upload Note</h2>
+        <form onSubmit={handleUpload}>
+          <div className="mb-3">
+            <label htmlFor="noteTitle" className="form-label">
+              Note Title
+            </label>
+            <input
+              type="text"
+              id="noteTitle"
+              value={noteTitle}
+              onChange={(e) => setNoteTitle(e.target.value)}
+              className="form-control"
+              required
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="noteContent" className="form-label">
+              Note Content
+            </label>
+            <textarea
+              id="noteContent"
+              value={noteContent}
+              onChange={(e) => setNoteContent(e.target.value)}
+              rows="5"
+              className="form-control"
+              required
+            ></textarea>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="tags" className="form-label">
+              Tags (comma-separated)
+            </label>
+            <input
+              type="text"
+              id="tags"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="category" className="form-label">
+              Category
+            </label>
+            <input
+              type="text"
+              id="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="fileInput" className="form-label">
+              Attach File (Optional)
+            </label>
+            <input
+              type="file"
+              id="fileInput"
+              onChange={handleFileChange}
+              className="form-control"
+            />
+          </div>
+          <div className="mb-3">
+            <label htmlFor="timeLock" className="form-label">
+              Time Lock (Optional, format: YYYY-MM-DDTHH:mm:ssZ)
+            </label>
+            <input
+              type="datetime-local"
+              id="timeLock"
+              value={timeLock}
+              onChange={(e) => setTimeLock(e.target.value)}
+              className="form-control"
+            />
+          </div>
+          <button type="submit" className="btn btn-primary w-100">
+            Upload Note
+          </button>
+        </form>
+        {status.message && (
+          <div className={`alert alert-${status.type} mt-3`} role="alert">
+            {status.message}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
