@@ -13,7 +13,7 @@ const getFileIcon = (contentType) => {
 const FileList = () => {
   const [files, setFiles] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [filesPerPage] = useState(10);
+  const [filesPerPage] = useState(6);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
