@@ -7,7 +7,7 @@ import { AppProvider } from "./context/AppContext";
 import HomePage from "./pages/HomePage";
 import Account from "./pages/Account";
 import NotesUpload from "./pages/NotesUpload";
-import FileList from "./pages/FileList";
+import NotesList from "./pages/NotesList";
 import FilePreview from "./pages/FilePreview";
 import FileEncryptUpload from "./pages/FileEncryptUpload";
 import FileShare from "./pages/FileShare";
@@ -25,7 +25,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/account" element={<Account />} />
             <Route path="/notes-upload" element={<NotesUpload />} />
-            <Route path="/file-list" element={<FileList />} />
+            <Route path="/notes-list" element={<NotesList />} />
             <Route path="/file-preview" element={<FilePreview />} />
             <Route path="/file-encrypt-upload" element={<FileEncryptUpload />} />
             <Route path="/file-share" element={<FileShare />} />

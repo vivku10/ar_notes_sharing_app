@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Arweave from "arweave";
+import axios from "axios";
 
 // Initialize Arweave instance
 const arweave = Arweave.init({
@@ -16,6 +17,7 @@ const NotesUpload = ({ addNote }) => {
   const [file, setFile] = useState(null);
   const [timeLock, setTimeLock] = useState("");
   const [status, setStatus] = useState({ message: "", type: "" });
+  const [autoTags, setAutoTags] = useState([]);
   const [walletKey, setWalletKey] = useState(null);
 
   useEffect(() => {
@@ -36,6 +38,27 @@ const NotesUpload = ({ addNote }) => {
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
+  };
+
+  const handleGenerateTags = async () => {
+    setStatus({ message: "Generating tags...", type: "info" });
+
+    const noteData = {
+      title: noteTitle,
+      content: noteContent,
+      attachment: file ? { fileName: file.name } : null,
+    };
+
+    try {
+      // Call the AO script endpoint
+      const response = await axios.post("https://arweave.net/ao/<script-id>", noteData);
+      setAutoTags(response.data);
+      setTags(response.data.join(", "));
+      setStatus({ message: "Tags generated successfully!", type: "success" });
+    } catch (error) {
+      console.error("Error generating tags:", error);
+      setStatus({ message: "Failed to generate tags.", type: "danger" });
+    }
   };
 
   const handleUpload = async (event) => {
@@ -62,7 +85,7 @@ const NotesUpload = ({ addNote }) => {
         createdAt: new Date().toISOString(),
       };
 
-      // Attach file if provided
+      // If a file is attached, read its data
       let fileAttachment = null;
       if (file) {
         const fileData = await readFileAsArrayBuffer(file);
@@ -73,7 +96,7 @@ const NotesUpload = ({ addNote }) => {
         };
       }
 
-      // Create Arweave transaction
+      // Create and upload Arweave transaction
       const transaction = await arweave.createTransaction(
         {
           data: JSON.stringify({ ...noteData, attachment: fileAttachment }),
@@ -81,7 +104,6 @@ const NotesUpload = ({ addNote }) => {
         walletKey
       );
 
-      // Add metadata tags
       transaction.addTag("App-Name", "NotesSharingApp");
       transaction.addTag("Content-Type", "application/json");
       transaction.addTag("Title", noteTitle);
@@ -111,13 +133,13 @@ const NotesUpload = ({ addNote }) => {
           });
         }
 
-        // Reset form fields
         setNoteTitle("");
         setNoteContent("");
         setTags("");
         setCategory("");
         setFile(null);
         setTimeLock("");
+        setAutoTags([]);
       } else {
         setStatus({
           message: `Failed to upload note. Status code: ${response.status}`,
@@ -144,9 +166,7 @@ const NotesUpload = ({ addNote }) => {
       <h2>Create and Upload Note</h2>
       <form onSubmit={handleUpload}>
         <div className="mb-3">
-          <label htmlFor="noteTitle" className="form-label">
-            Note Title
-          </label>
+          <label htmlFor="noteTitle" className="form-label">Note Title</label>
           <input
             type="text"
             id="noteTitle"
@@ -157,9 +177,7 @@ const NotesUpload = ({ addNote }) => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="noteContent" className="form-label">
-            Note Content
-          </label>
+          <label htmlFor="noteContent" className="form-label">Note Content</label>
           <textarea
             id="noteContent"
             value={noteContent}
@@ -170,9 +188,12 @@ const NotesUpload = ({ addNote }) => {
           ></textarea>
         </div>
         <div className="mb-3">
-          <label htmlFor="tags" className="form-label">
-            Tags (comma-separated)
-          </label>
+          <button type="button" onClick={handleGenerateTags} className="btn btn-secondary">
+            Generate Tags
+          </button>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="tags" className="form-label">Tags (comma-separated)</label>
           <input
             type="text"
             id="tags"
@@ -182,9 +203,7 @@ const NotesUpload = ({ addNote }) => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="category" className="form-label">
-            Category
-          </label>
+          <label htmlFor="category" className="form-label">Category</label>
           <input
             type="text"
             id="category"
@@ -194,9 +213,7 @@ const NotesUpload = ({ addNote }) => {
           />
         </div>
         <div className="mb-3">
-          <label htmlFor="fileInput" className="form-label">
-            Attach File (Optional)
-          </label>
+          <label htmlFor="fileInput" className="form-label">Attach File (Optional)</label>
           <input
             type="file"
             id="fileInput"
@@ -216,14 +233,10 @@ const NotesUpload = ({ addNote }) => {
             className="form-control"
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          Upload Note
-        </button>
+        <button type="submit" className="btn btn-primary">Upload Note</button>
       </form>
       {status.message && (
-        <div className={`alert alert-${status.type} mt-3`} role="alert">
-          {status.message}
-        </div>
+        <div className={`alert alert-${status.type} mt-3`} role="alert">{status.message}</div>
       )}
     </div>
   );
