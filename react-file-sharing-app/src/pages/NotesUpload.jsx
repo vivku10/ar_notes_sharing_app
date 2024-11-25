@@ -17,7 +17,6 @@ const NotesUpload = ({ addNote }) => {
   const [file, setFile] = useState(null);
   const [timeLock, setTimeLock] = useState("");
   const [status, setStatus] = useState({ message: "", type: "" });
-  const [autoTags, setAutoTags] = useState([]);
   const [walletKey, setWalletKey] = useState(null);
 
   useEffect(() => {
@@ -40,27 +39,6 @@ const NotesUpload = ({ addNote }) => {
     setFile(event.target.files[0]);
   };
 
-  const handleGenerateTags = async () => {
-    setStatus({ message: "Generating tags...", type: "info" });
-
-    const noteData = {
-      title: noteTitle,
-      content: noteContent,
-      attachment: file ? { fileName: file.name } : null,
-    };
-
-    try {
-      // Call the AO script endpoint
-      const response = await axios.post("https://arweave.net/ao/<script-id>", noteData);
-      setAutoTags(response.data);
-      setTags(response.data.join(", "));
-      setStatus({ message: "Tags generated successfully!", type: "success" });
-    } catch (error) {
-      console.error("Error generating tags:", error);
-      setStatus({ message: "Failed to generate tags.", type: "danger" });
-    }
-  };
-
   const handleUpload = async (event) => {
     event.preventDefault();
 
@@ -75,37 +53,36 @@ const NotesUpload = ({ addNote }) => {
     }
 
     try {
-      // Prepare note data
-      const noteData = {
-        title: noteTitle,
-        content: noteContent,
-        tags: tags.split(",").map((tag) => tag.trim()),
-        category,
-        timeLock: timeLock || "none",
-        createdAt: new Date().toISOString(),
-      };
-
-      // If a file is attached, read its data
-      let fileAttachment = null;
+      let transaction;
       if (file) {
+        // If a file is attached, upload it directly
         const fileData = await readFileAsArrayBuffer(file);
-        fileAttachment = {
-          fileName: file.name,
-          fileType: file.type,
-          fileData: Array.from(new Uint8Array(fileData)), // Convert to array for JSON serialization
-        };
+
+        transaction = await arweave.createTransaction({ data: fileData }, walletKey);
+
+        // Add metadata tags for the file
+        transaction.addTag("App-Name", "NotesSharingApp");
+        transaction.addTag("Content-Type", file.type);
+        transaction.addTag("File-Name", file.name);
+      } else {
+        // If no file is attached, upload only the note details
+        const noteData = JSON.stringify({
+          title: noteTitle,
+          content: noteContent,
+          tags: tags.split(",").map((tag) => tag.trim()),
+          category,
+          timeLock: timeLock || "none",
+          createdAt: new Date().toISOString(),
+        });
+
+        transaction = await arweave.createTransaction({ data: noteData }, walletKey);
+
+        // Add metadata tags for the note
+        transaction.addTag("App-Name", "NotesSharingApp");
+        transaction.addTag("Content-Type", "application/json");
       }
 
-      // Create and upload Arweave transaction
-      const transaction = await arweave.createTransaction(
-        {
-          data: JSON.stringify({ ...noteData, attachment: fileAttachment }),
-        },
-        walletKey
-      );
-
-      transaction.addTag("App-Name", "NotesSharingApp");
-      transaction.addTag("Content-Type", "application/json");
+      // Add common tags
       transaction.addTag("Title", noteTitle);
       transaction.addTag("Category", category);
       transaction.addTag("Tags", tags);
@@ -129,17 +106,17 @@ const NotesUpload = ({ addNote }) => {
             noteContent,
             category,
             tags: tags.split(","),
-            fileAttachment,
+            fileAttachment: file ? { fileName: file.name, fileType: file.type } : null,
           });
         }
 
+        // Reset form fields
         setNoteTitle("");
         setNoteContent("");
         setTags("");
         setCategory("");
         setFile(null);
         setTimeLock("");
-        setAutoTags([]);
       } else {
         setStatus({
           message: `Failed to upload note. Status code: ${response.status}`,
