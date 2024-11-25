@@ -85,37 +85,37 @@ const Navigation = () => {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link to="/notes-upload" className="nav-link">
-                Notes Upload
+                Upload
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/notes-list" className="nav-link">
-                Notes List
+                List
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/file-preview" className="nav-link">
-                File Preview
+                Preview
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/file-search" className="nav-link">
-                File Search
+                Search
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/file-encrypt-upload" className="nav-link">
-                Encrypt & Upload
+                Encrypt
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/file-share" className="nav-link">
-                File Share
+                Share
               </Link>
             </li>
             <li className="nav-item">
               <Link to="/file-delete" className="nav-link">
-                Delete File
+                Delete
               </Link>
             </li>
           </ul>

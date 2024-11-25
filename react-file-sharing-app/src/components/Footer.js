@@ -6,7 +6,7 @@ const Footer = () => {
       <div className="container">
         <p className="mb-1">&copy; {new Date().getFullYear()} ArNotes. All Rights Reserved.</p>
         <p className="mb-0">
-          Made with <span style={{ color: "red" }}>❤️</span> by Our Team
+          Made with <span style={{ color: "red" }}>❤️</span> for ArWeave Fullstack Hack 2024
         </p>
       </div>
     </footer>
