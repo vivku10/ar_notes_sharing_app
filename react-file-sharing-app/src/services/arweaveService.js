@@ -29,7 +29,7 @@ export const fetchFilesByTag = async (tagName) => {
   const query = {
     op: "equals",
     expr1: "App-Name",
-    expr2: "NotesSharingApp",
+    expr2: "FileSharingApp",
   };
 
   const response = await arweave.api.post("arql", query);
